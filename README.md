@@ -118,3 +118,32 @@ Devemos gerar um url único para cada url original
 
 #### Primeira abordagem
 
+1. Podemos usar um algoritmo de criptográfia, como md5 ou sha1, para criptografar a url original.
+2. Com o hash, usamos o Base62 para gerar um código url friendly, pois gera um alfanumérico (A-Za-z0-9).
+3. Pegamos os primeiros 6 bytes do hash, convertemos para hexadecimal, e convertemos para base62. (Essa escolha de primeiros 6 bytes é feito, pois assim podemos gerar um base62 de 7 caracteres).
+
+O problema com essa abordagem é que podemos acabar gerando o mesmo código.
+Para contornar isso, podemos verificar se a hash existe, e caso exista, adicionamos um sufixo na short url.
+
+#### Segunda abordagem
+
+Usar incremental ID, assim, podemos garantir que não teremos código repetido, se gerarmos a base62 do ID.
+
+Os problemas são: por se tratar de IDs sequenciais, eles são previsíveis. E, se não tivermos um bom design de geração de ID, pode causar um bottleneck.
+
+### Custom alias
+
+O usuário pode mandar custom aliases para o short url, matendo as seguintes regras:
+
+- Não pode ser um url repetido
+- conter somente caracteres validados, como alfanuméricos, e hifen
+- não usar paths já usadas pela API, como "admin"
+
+### Link expiration
+
+As urls têm um período de vida, após isso, elas são descartadas.
+
+- O usuário pode definir a data de expiração
+- O sistema pode definir uma data padrão de 1 ano se o usuário não definir
+
+Para a lógica, podemos ter um cron, que verifica os vencidos, e descarta eles, ou podemos descartá-los ao acessar a url.
