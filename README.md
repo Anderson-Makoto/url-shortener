@@ -147,3 +147,19 @@ As urls têm um período de vida, após isso, elas são descartadas.
 - O sistema pode definir uma data padrão de 1 ano se o usuário não definir
 
 Para a lógica, podemos ter um cron, que verifica os vencidos, e descarta eles, ou podemos descartá-los ao acessar a url.
+
+### Serviço de redirecionamento
+
+Para o redirecionamento, a short url recebida deve ser:
+1. Consultar o banco (ou cache) para a original url relacionada a esse short url
+2. Retornar um HTTP 301 redirect com a original url.
+
+#### Cache
+
+Para reduzir a latencia, podemos guardar em cache as mais acessadas short urls
+
+### Serviço de analytics
+
+Para guardarmos o número de acessos de cada shor url, podemos ter um serviço de analytics, para isso podemos:
+
+- Usar message queues para poder 
