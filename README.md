@@ -161,5 +161,57 @@ Para reduzir a latencia, podemos guardar em cache as mais acessadas short urls
 ### Serviço de analytics
 
 Para guardarmos o número de acessos de cada shor url, podemos ter um serviço de analytics, para isso podemos:
+- Usar message queues para poder como Kafka para registrar cada evento de clique. Isso desacopla o analytics do serviço de redirect, o que evita de introduzir latência.
+- Usar processamento em batch para enviar os logs de clique para um warehouse para análise.
 
-- Usar message queues para poder 
+## Problemas chave e bottleneck
+
+### Escalabilidade
+
+#### Camada API
+
+Podemos criar várias instâncias de servidor e gerenciá-los por um load balancer. Assim podemos distribuí-los igualmente entre eles.
+
+#### Sharding
+
+Podemos distribuir os dados entre vários shards de banco de dados, para isso podemos ter, por exemplo:
+- os dados armazenados em range-based shards, o que significa que um shar pode armazenar os dados com IDs de 1 à 1000000, o segundo shard de 1000001 à 2000000, e assim por diante.
+- Pode ser hash-based, com isso, o ID da url é usada em um hash, e tirado o modulo da divisão com N, onde N é o número de shards.
+
+### Disponibilidade
+
+#### Replicação
+
+Usar replicação de dados para garantir que eles estejam disponíveis mesmo que um banco caia.
+
+#### Failover
+
+Implementar mecanismos para trocar automaticamente para outros servidores ou bancos caso um caia.
+
+#### Deploy geo-distribuído
+
+Deploy do serviço em várias regiões para melhorar a eficiência e a disponibilidade
+
+### Edge cases
+
+1. Caso a url expire, o servidor deve retornar um http 410.
+2. Caso tentem acessar uma url não existente, o servidor deve retornar um http 404.
+3. Se um conflito ocorrer, onde uma short url mapeia para mais de uma original url, devemos lidar com isso, uma abordagem seria verificar qual usuário pediu a url, e então redirecionar para a original url deste usuário.
+
+### Segurança
+
+#### Rate limit
+
+Para prevenir um ddos, ou um overflow, podemos criar um rate limit de requisições.
+
+#### Validação de input
+
+Garantir que a url original não contenha conteúdo malicioso
+
+#### HTTPS
+
+Devemos realizar a comunicação entre cliente-servidor usando https, assim evitamos ataques de eavesdropping e man-in-the-middle.
+
+#### Monitoramento e alertas
+
+Monitoriamento para padrões suspeitos de atividades, e triggerar alertas para potenciais ataques de DDoS
