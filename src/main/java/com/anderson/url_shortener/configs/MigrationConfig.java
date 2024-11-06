@@ -1,5 +1,8 @@
-import io.mongock.runner.springboot.EnableMongock;
+package com.anderson.url_shortener.configs;
+
 import org.springframework.context.annotation.Configuration;
+
+import com.github.cloudyrock.spring.v5.EnableMongock;
 
 @Configuration
 @EnableMongock

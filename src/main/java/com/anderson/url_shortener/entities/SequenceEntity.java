@@ -1,15 +1,18 @@
 package com.anderson.url_shortener.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Document(collection = "sequences")
 @Getter
 @Setter
-@AllArgsConstructor
 public class SequenceEntity {
     private String entity;
-    private String id_sequence;
+    private Integer id_sequence;
+
+    public SequenceEntity(String entity, Integer id_sequence) {
+        this.entity = entity;
+        this.id_sequence = id_sequence;
+    }
 }
