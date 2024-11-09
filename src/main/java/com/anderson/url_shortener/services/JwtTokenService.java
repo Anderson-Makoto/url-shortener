@@ -2,14 +2,9 @@ package com.anderson.url_shortener.services;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.anderson.url_shortener.dtos.UserDetailsAuthDTO;
 import com.anderson.url_shortener.entities.UserEntity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
