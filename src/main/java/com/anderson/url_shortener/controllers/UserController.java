@@ -1,11 +1,18 @@
 package com.anderson.url_shortener.controllers;
 
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.anderson.url_shortener.dtos.UserDTO;
+import com.anderson.url_shortener.entities.UserEntity;
+import com.anderson.url_shortener.services.JwtTokenService;
 import com.anderson.url_shortener.services.UserService;
 
 @RestController
@@ -13,12 +20,20 @@ import com.anderson.url_shortener.services.UserService;
 @AllArgsConstructor
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
-    @PostMapping("/save")
-    public UserDTO saveUser(@RequestBody UserDTO userBody) {
-        UserDTO userResponse = this.userService.saveUser(userBody);
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        userDTO = this.userService.login(userDTO);
 
-        return userResponse;
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO userBody) {
+        UserDTO userDTO = this.userService.saveUser(userBody);
+
+        return ResponseEntity.ok(userDTO);
     }
 }
