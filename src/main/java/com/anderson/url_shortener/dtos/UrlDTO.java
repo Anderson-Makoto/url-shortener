@@ -13,20 +13,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UrlDTO implements IDTO {
 
+    private Integer id;
     private String shortUrl;
     private String originalUrl;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
-    private Integer userId;
+    private UserDTO userId;
     private Integer clickCount;
 
     public UrlEntity toEntity() {
         return new UrlEntity(
+                this.id,
                 this.shortUrl,
                 this.originalUrl,
                 this.createdAt,
                 this.expiresAt,
-                this.userId,
+                this.userId.toEntity(),
                 this.clickCount);
     }
 }

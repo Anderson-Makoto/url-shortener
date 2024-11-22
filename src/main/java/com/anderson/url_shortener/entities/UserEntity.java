@@ -1,18 +1,22 @@
 package com.anderson.url_shortener.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.anderson.url_shortener.dtos.UserDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +48,9 @@ public class UserEntity implements IEntity, UserDetails {
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<UrlEntity> urls = new ArrayList<>();
+
     public UserDTO toDTO() {
         return new UserDTO(
                 this.getId(),
@@ -51,7 +58,8 @@ public class UserEntity implements IEntity, UserDetails {
                 this.getEmail(),
                 this.getPassword(),
                 this.getCreatedAt(),
-                null);
+                null,
+                this.urls);
     }
 
     @Override
