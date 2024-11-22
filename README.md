@@ -72,7 +72,7 @@ Seguindo a regra do 80-20, ou seja, 20 % das hot urls, representam 80% dos redir
 
 ### tipo de banco
 
-Para este problema, não é necessário uma estrutura complexa de dados robusto com ACID, nem uma rede complexa, então bancos relacionais não é necessário. Por se tratar de um problema onde a complexidade não é o foco, e sim o desempenho, um banco orientado a documentos faz mais sentido neste contexto.
+Podemos optar por um banco relacional, pois não nenhuma característica muito evidente que faça escolher um outro banco.
 
 ### Schemas
 
