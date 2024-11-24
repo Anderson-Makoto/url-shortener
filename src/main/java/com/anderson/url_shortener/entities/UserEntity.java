@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.anderson.url_shortener.dtos.UserDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +29,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity implements IEntity, UserDetails {
+public class UserEntity implements UserDetails {
+
+    private String token = null;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -50,17 +52,6 @@ public class UserEntity implements IEntity, UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<UrlEntity> urls = new ArrayList<>();
-
-    public UserDTO toDTO() {
-        return new UserDTO(
-                this.getId(),
-                this.getName(),
-                this.getEmail(),
-                this.getPassword(),
-                this.getCreatedAt(),
-                null,
-                this.urls);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

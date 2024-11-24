@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import com.anderson.url_shortener.dtos.UserDTO;
 import com.anderson.url_shortener.entities.UserEntity;
 import com.anderson.url_shortener.helpers.PasswordHelper;
 import com.anderson.url_shortener.repositories.UserRepository;
@@ -23,30 +22,27 @@ public class UserService {
         this.userRepository = userRespository;
     }
 
-    public UserDTO saveUser(UserDTO userDTO) {
+    public UserEntity saveUser(UserEntity userEntity) {
 
-        if (this.userRepository.findByEmail(userDTO.getEmail()) != null) {
+        if (this.userRepository.findByEmail(userEntity.getEmail()) != null) {
             return null;
         }
 
-        String passEncrypted = PasswordHelper.hashPassword(userDTO.getPassword());
-        userDTO.setPassword(passEncrypted);
+        String passEncrypted = PasswordHelper.hashPassword(userEntity.getPassword());
+        userEntity.setPassword(passEncrypted);
+        userEntity = userRepository.save(userEntity);
+        userEntity.setPassword(null);
 
-        UserEntity userEntity = userRepository.save(userDTO.toEntity());
-
-        userDTO = userEntity.toDTO();
-        userDTO.setPassword(null);
-
-        return userDTO;
+        return userEntity;
     }
 
-    public UserDTO login(UserDTO userDTO) {
-        var userPass = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+    public UserEntity login(UserEntity userEntity) {
+        var userPass = new UsernamePasswordAuthenticationToken(userEntity.getEmail(), userEntity.getPassword());
 
         var auth = this.authenticationManager.authenticate(userPass);
         String token = this.jwtTokenService.generateToken((UserEntity) auth.getPrincipal());
-        userDTO.setToken(token);
+        userEntity.setToken(token);
 
-        return userDTO;
+        return userEntity;
     }
 }

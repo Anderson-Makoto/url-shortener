@@ -1,8 +1,6 @@
 package com.anderson.url_shortener.entities;
 
 import java.time.LocalDateTime;
-import com.anderson.url_shortener.dtos.UrlDTO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,8 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UrlEntity implements IEntity {
-
+public class UrlEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -44,16 +41,4 @@ public class UrlEntity implements IEntity {
 
     @Column(name = "click_count", nullable = false)
     private Integer clickCount;
-
-    public UrlDTO toDTO() {
-        return new UrlDTO(
-                this.id,
-                this.shortUrl,
-                this.originalUrl,
-                this.createdAt,
-                this.expiresAt,
-                this.user.toDTO(),
-                this.clickCount);
-    }
-
 }

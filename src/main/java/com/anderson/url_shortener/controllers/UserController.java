@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.anderson.url_shortener.dtos.UserDTO;
+
+import com.anderson.url_shortener.entities.UserEntity;
 import com.anderson.url_shortener.services.UserService;
 
 @RestController
@@ -20,16 +21,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
-        userDTO = this.userService.login(userDTO);
+    public ResponseEntity<?> login(@RequestBody UserEntity userEntity) {
+        userEntity = this.userService.login(userEntity);
 
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userEntity);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO userBody) {
-        UserDTO userDTO = this.userService.saveUser(userBody);
+    public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) {
+        userEntity = this.userService.saveUser(userEntity);
 
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userEntity);
     }
 }
