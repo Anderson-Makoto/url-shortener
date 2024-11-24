@@ -11,7 +11,9 @@ public class UrlGeneratorService {
     @Autowired
     private UrlRepository urlRepository;
 
-    public UrlEntity saveUrl(String originalUrl, UserEntity userEntity) throws Exception {
+    public UrlEntity saveUrl(UrlEntity urlEntity) throws Exception {
+        String originalUrl = urlEntity.getOriginalUrl();
+        UserEntity userEntity = urlEntity.getUser();
         if (!this.isOriginalUrlValid(originalUrl)) {
             throw new InvalidUrlException();
         }
@@ -21,7 +23,7 @@ public class UrlGeneratorService {
         }
 
         String shortUrl = this.generateShortUrl(originalUrl);
-        UrlEntity urlEntity = new UrlEntity(null, shortUrl, originalUrl, null, null, userEntity, null);
+        urlEntity.setShortUrl(shortUrl);
 
         this.urlRepository.save(urlEntity);
 
