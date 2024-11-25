@@ -2,11 +2,13 @@ package com.anderson.url_shortener.services;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.anderson.url_shortener.Exceptions.InvalidUrlException;
 import com.anderson.url_shortener.entities.UrlEntity;
 import com.anderson.url_shortener.entities.UserEntity;
 import com.anderson.url_shortener.repositories.UrlRepository;
 
+@Service
 public class UrlGeneratorService {
     @Autowired
     private UrlRepository urlRepository;
