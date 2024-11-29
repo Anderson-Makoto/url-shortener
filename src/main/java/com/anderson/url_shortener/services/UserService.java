@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import com.anderson.url_shortener.Exceptions.InvalidUserException;
 import com.anderson.url_shortener.entities.UserEntity;
 import com.anderson.url_shortener.helpers.PasswordHelper;
 import com.anderson.url_shortener.repositories.UserRepository;
@@ -22,15 +23,19 @@ public class UserService {
         this.userRepository = userRespository;
     }
 
-    public UserEntity saveUser(UserEntity userEntity) {
-
+    public UserEntity saveUser(UserEntity userEntity) throws Exception {
         if (this.userRepository.findByEmail(userEntity.getEmail()) != null) {
-            return null;
+            throw new InvalidUserException();
         }
+
+        String plainPass = userEntity.getPassword();
 
         String passEncrypted = PasswordHelper.hashPassword(userEntity.getPassword());
         userEntity.setPassword(passEncrypted);
         userEntity = userRepository.save(userEntity);
+        // userEntity.setPassword(plainPass);
+
+        // userEntity = this.login(userEntity);
         userEntity.setPassword(null);
 
         return userEntity;
@@ -42,6 +47,7 @@ public class UserService {
         var auth = this.authenticationManager.authenticate(userPass);
         String token = this.jwtTokenService.generateToken((UserEntity) auth.getPrincipal());
         userEntity.setToken(token);
+        userEntity.setPassword(null);
 
         return userEntity;
     }

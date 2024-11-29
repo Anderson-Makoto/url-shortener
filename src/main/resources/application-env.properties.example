@@ -1,15 +1,6 @@
 # application config
 PORT=8086
 
-# mongo configs
-
-MONGO_HOST=localhost
-MONGO_PORT=27017
-MONGO_DATABASE=url-shortener-db
-MONGO_USERNAME=root
-MONGO_PASSWORD=example
-MONGO_AUTHENTICATION_DB=admin
-
 # postgres configs
 
 POSTGRES_HOST=localhost

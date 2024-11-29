@@ -2,6 +2,7 @@ package com.anderson.url_shortener.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class UserController {
         try {
             userEntity = this.userService.login(userEntity);
 
-            return ResponseEntity.ok(userEntity);
+            return ResponseEntity.status(HttpStatus.OK).body(userEntity);
         } catch (Exception e) {
             return HttpResponseHandler.handleHttpResponse(e);
         }
@@ -34,7 +35,7 @@ public class UserController {
     public ResponseEntity<?> saveUser(@RequestBody UserEntity userEntity) {
         try {
             userEntity = this.userService.saveUser(userEntity);
-            return ResponseEntity.ok(userEntity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userEntity);
         } catch (Exception e) {
             return HttpResponseHandler.handleHttpResponse(e);
         }
